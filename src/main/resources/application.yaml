@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: todolist
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: DEBUG

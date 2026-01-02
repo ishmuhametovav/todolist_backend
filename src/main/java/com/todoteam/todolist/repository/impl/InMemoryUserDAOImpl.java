@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
@@ -13,8 +15,7 @@ import java.util.stream.IntStream;
 public class InMemoryUserDAOImpl implements UserDAO
 {
     //TODO is returning deleted user makes any sense?
-    //TODO ArrayList is not thread save, better to be replaced with ConcurrentHashMap
-    private final List<User> users = new ArrayList<>();
+    private final ConcurrentHashMap<Long, User> users = new ConcurrentHashMap<>();
     private final AtomicLong idGen = new AtomicLong(0);
 
     @Override
@@ -24,51 +25,46 @@ public class InMemoryUserDAOImpl implements UserDAO
         {
             Long id = idGen.getAndIncrement();
             user.setId(id);
+            users.put(id, user);
         }
 
-        users.add(user);
+        else
+        {
+            User prev = users.putIfAbsent(user.getId(), user);
+            if(prev != null) return null;
+        }
         return user;
     }
 
     @Override
     public List<User> findAllUsers()
     {
-        return users;
+        return new ArrayList<>(users.values());
     }
 
     @Override
     public User findUserById(Long id)
     {
-        return users.stream()
-                .filter(user -> user.getId().equals(id))
-                .findFirst().orElse(null);
+        return users.get(id);
     }
 
     @Override
     public User findUserByName(String name)
     {
-        return users.stream().filter(u -> u.getName().equals(name))
+        return users.values().stream().filter(u -> u.getName().equals(name))
                 .findFirst().orElse(null);
     }
 
     @Override
     public void updateUser(User user)
     {
-        int index = IntStream.range(0, users.size())
-                .filter(i -> users.get(i).getId().equals(user.getId()))
-                .findFirst().orElse(-1);
-
-        if(index != -1) users.set(index, user);
+        Long id = user.getId();
+        users.replace(id, user);
     }
 
     @Override
     public User deleteUser(Long id)
     {
-        User user = users.stream()
-                .filter(usr -> usr.getId().equals(id))
-                .findFirst().orElse(null);
-        users.remove(user);
-
-        return user;
+        return users.remove(id);
     }
 }

@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class InMemoryTokenServiceImpl implements TokenService
-{
+{//TODO make ability to expire token
     private final Map<String, Long> tokens = new ConcurrentHashMap<>();
     @Override
     public String createTokenForUser(Long userId)

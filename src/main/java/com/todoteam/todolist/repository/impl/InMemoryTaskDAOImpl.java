@@ -26,6 +26,13 @@ public class InMemoryTaskDAOImpl implements TaskDAO
             task.setId(id);
         }
 
+        Boolean completed = task.getCompleted();
+
+        if(completed == null)
+        {
+            task.setCompleted(false);
+        }
+
         Task prev = tasks.putIfAbsent(id, task);
 
         if(prev != null)

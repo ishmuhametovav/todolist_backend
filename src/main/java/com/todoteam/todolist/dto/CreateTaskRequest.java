@@ -9,5 +9,6 @@ public class CreateTaskRequest
 {
     public String title;
     public Difficulty difficulty;
+    public Boolean completed;
     public List<StepDTO> steps;
 }

@@ -33,7 +33,7 @@ public class TaskMapper
     public static Task fromCreateRequestToTask(CreateTaskRequest request, Long userId)
     {
         Task t = Task.builder().userId(userId).title(request.title)
-                .difficulty(request.difficulty).build();
+                .difficulty(request.difficulty).completed(request.completed).build();
 
         t.setSteps(StepMapper.fromUpdateRequestToStepList(request.steps));
 

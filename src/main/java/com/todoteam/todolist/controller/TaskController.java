@@ -67,7 +67,7 @@ public class TaskController
         }
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateUserTask(@PathVariable Long id
             , @Valid @RequestBody UpdateTaskRequest request, @AuthenticationPrincipal User user)
     {

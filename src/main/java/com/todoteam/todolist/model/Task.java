@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,10 @@ public class Task
     private Difficulty difficulty;
 
     private Boolean completed;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     private List<Step> steps = new ArrayList<>();
 }

@@ -4,6 +4,7 @@ import com.todoteam.todolist.model.Task;
 import com.todoteam.todolist.repository.TaskDAO;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +33,10 @@ public class InMemoryTaskDAOImpl implements TaskDAO
         {
             task.setCompleted(false);
         }
+
+        task.setCreatedAt(LocalDateTime.now());
+
+        task.setUpdatedAt(LocalDateTime.now());
 
         Task prev = tasks.putIfAbsent(id, task);
 
@@ -62,6 +67,8 @@ public class InMemoryTaskDAOImpl implements TaskDAO
         Long id = task.getId();
 
         Objects.requireNonNull(id, "id must not be null");
+
+        task.setUpdatedAt(LocalDateTime.now());
 
         tasks.put(id, task);
     }

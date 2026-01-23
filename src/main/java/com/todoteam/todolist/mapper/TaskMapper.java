@@ -21,7 +21,8 @@ public class TaskMapper
 
 
         return new TaskResponse(task.getId(), task.getUserId(),
-                task.getTitle(), task.getDifficulty(), task.getCompleted(), steps);
+                task.getTitle(), task.getDifficulty(), task.getCompleted(),
+                task.getCreatedAt(), task.getUpdatedAt(), steps);
     }
 
     public static List<TaskResponse> toResponseList(List<Task> tasks)
@@ -43,7 +44,8 @@ public class TaskMapper
     public static Task fromUpdateRequestToTask(UpdateTaskRequest request, Long userId)
     {
         Task t = Task.builder().userId(userId).title(request.title)
-                .difficulty(request.difficulty).completed(request.completed).build();
+                .difficulty(request.difficulty).completed(request.completed)
+                .createdAt(request.createdAt).build();
 
         t.setSteps(StepMapper.fromUpdateRequestToStepList(request.steps));
 

@@ -23,7 +23,7 @@ public class InMemoryTaskDAOImpl implements TaskDAO
         Long id = task.getId();
         if(id == null)
         {
-            id = genId.getAndIncrement();
+            id = genId.incrementAndGet();
             task.setId(id);
         }
 
